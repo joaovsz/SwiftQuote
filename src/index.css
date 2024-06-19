@@ -28,7 +28,18 @@ body {
   min-height: 100vh;
 }
 
-h1, h2, h3 {
+h1,
+h2,
+h3 {
   margin: 0;
   line-height: 1.1;
+}
+.p-menubar-end {
+  margin: 0;
+}
+.p-menubar {
+  justify-content: space-between;
+}
+.p-menubar {
+  max-width: 500px;
 }
