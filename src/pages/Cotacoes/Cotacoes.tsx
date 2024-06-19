@@ -16,6 +16,16 @@ const Cotacoes = () => {
         <h2>Cadastro de Cotação</h2>
         <form onSubmit={handleSubmit(onSubmit)}>
           <TextField
+            label="Produto"
+            name="produto"
+            id="produto"
+            controllerProps={{
+              control,
+              name: "produto",
+              defaultValue: "",
+            }}
+          />
+          <TextField
             label="Data de Criação"
             name="dataCriacao"
             id="dataCriacao"
