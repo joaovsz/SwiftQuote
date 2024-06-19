@@ -30,7 +30,7 @@ const TextField = ({
   return (
     <span
       className={styles.column}
-      style={{ ...style, minWidth: "300px", maxWidth: "500px" }}
+      style={{ ...style, minWidth: "250px", maxWidth: "500px" }}
     >
       <label htmlFor={id} id={`${id}-label`}>
         {label}

@@ -41,3 +41,41 @@
 form {
   width: 100%;
 }
+
+@media (max-width: 768px) {
+  .card {
+    max-width: 90%;
+    width: 90%;
+    padding: 15px;
+  }
+
+  .card form {
+    gap: 12px;
+    padding: 15px;
+  }
+
+  .field {
+    width: 100%;
+  }
+}
+
+@media (max-width: 480px) {
+  .card {
+    max-width: 95%;
+    width: 95%;
+    padding: 10px;
+  }
+
+  .card form {
+    gap: 10px;
+    padding: 10px;
+  }
+
+  .field {
+    width: 100%;
+  }
+
+  .error {
+    font-size: 0.75rem;
+  }
+}
