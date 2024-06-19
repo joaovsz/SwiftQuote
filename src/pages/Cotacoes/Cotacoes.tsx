@@ -71,7 +71,7 @@ const Cotacoes = () => {
               defaultValue: "",
             }}
           />
-          <CustomButton label="Cadastrar" />{" "}
+          <CustomButton style={{ marginTop: "16px" }} label="Cadastrar" />{" "}
         </form>
       </div>
     </div>

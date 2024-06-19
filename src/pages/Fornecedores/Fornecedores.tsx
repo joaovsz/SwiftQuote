@@ -3,7 +3,7 @@ import styles from "./Fornecedores.module.css";
 import { Fornecedor } from "../../models/Entidades";
 import TextField from "../../components/TextField.tsx/TextField";
 import CustomButton from "../../components/CustomButton/CustomButton";
-import {addFornecedor} from  '../../../firebase/Services/firebaseService'
+import { addFornecedor } from "../../../firebase/Services/firebaseService";
 const Fornecedores = () => {
   const { control, handleSubmit } = useForm<Fornecedor>({
     defaultValues: {
@@ -17,7 +17,7 @@ const Fornecedores = () => {
 
   const onSubmit: SubmitHandler<Fornecedor> = async (data) => {
     await addFornecedor(data);
-};
+  };
 
   return (
     <div className={styles.container}>
@@ -56,7 +56,7 @@ const Fornecedores = () => {
           />
           <CustomButton
             label={"Cadastrar Fornecedor"}
-            style={{ maxWidth: "500px", width: "100%" }}
+            style={{ marginTop: "16px", maxWidth: "500px", width: "100%" }}
           />
         </form>
       </div>

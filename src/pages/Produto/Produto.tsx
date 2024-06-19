@@ -45,7 +45,10 @@ const ProdutoPage: React.FC = () => {
             id="quantidade"
             controllerProps={{ control, name: "quantidade", defaultValue: "" }}
           />
-          <CustomButton label="Cadastrar Produto" />
+          <CustomButton
+            style={{ marginTop: "16px" }}
+            label="Cadastrar Produto"
+          />
         </form>
       </div>
     </div>
