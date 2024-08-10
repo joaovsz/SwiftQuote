@@ -6,11 +6,15 @@ import { Produto } from "../../models/Entidades";
 import styles from "./Produto.module.css";
 import CustomButton from "../../components/CustomButton/CustomButton";
 const ProdutoPage: React.FC = () => {
-  const { control, handleSubmit } = useForm<Produto>();
+  const { control, handleSubmit, reset } = useForm<Produto>();
 
   const onSubmit: SubmitHandler<Produto> = async (data) => {
-    console.log(data);
-    await addProduto(data);
+    try {
+      await addProduto(data);
+      reset();
+    } catch (error) {
+      alert((error as Error).message);
+    }
   };
 
   return (
@@ -49,6 +53,7 @@ const ProdutoPage: React.FC = () => {
           <CustomButton
             style={{ marginTop: "16px" }}
             label="Cadastrar Produto"
+            type="submit"
           />
         </form>
       </div>

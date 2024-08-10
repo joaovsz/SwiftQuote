@@ -1,16 +1,31 @@
 import { SubmitHandler, useForm } from "react-hook-form";
 import TextField from "../../components/TextField.tsx/TextField";
 import { addCotacao } from "../../../firebase/Services/createServices";
+import { fetchFornecedores } from "../../../firebase/Services/fetchServices";
 import { Cotacao } from "../../models/Entidades";
 import styles from "./Cotacoes.module.css";
 import CustomButton from "../../components/CustomButton/CustomButton";
 import Select from "../../components/Select/Select";
+import { useEffect, useState } from "react";
+interface Options {
+  name: string;
+  value: string;
+}
 const Cotacoes = () => {
   const { control, handleSubmit } = useForm<Cotacao>();
-
+  const [fornecedores, setFornecedores] = useState<Options[]>([]);
+  useEffect(() => {
+    fetchFornecedores().then((fornecedores) => {
+      const fornecedorOption = fornecedores.map((fornecedor) => {
+        return { name: fornecedor.nome, value: fornecedor.cnpj };
+      });
+      setFornecedores(fornecedorOption);
+    });
+  }, []);
   const onSubmit: SubmitHandler<Cotacao> = async (data) => {
     await addCotacao(data);
   };
+
   return (
     <div className={styles.container}>
       <div className={styles.card}>
@@ -75,16 +90,16 @@ const Cotacoes = () => {
             />
           </div>
           <div className={styles.row}>
-            <Select
+            {/* <Select
               options={[]}
               label="ID do Usuário"
               name="usuarioId"
               id="usuarioId"
               controllerProps={{ control, name: "usuarioId", defaultValue: "" }}
-            />
+            /> */}
             <Select
-              options={[]}
-              label="ID do Fornecedor"
+              options={fornecedores}
+              label="Fornecedor"
               name="fornecedorId"
               id="fornecedorId"
               controllerProps={{

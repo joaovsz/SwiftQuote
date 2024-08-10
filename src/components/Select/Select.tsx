@@ -29,7 +29,7 @@ const Select = ({
   return (
     <div
       className={styles.column}
-      style={{ ...style, minWidth: "250px", maxWidth: "500px" }}
+      style={{ ...style, minWidth: "250px", maxWidth: "485px" }}
     >
       <label htmlFor={id} id={`${id}-label`}>
         {label}
@@ -40,6 +40,7 @@ const Select = ({
         onChange={(e) => {
           field.onChange(e.target.value);
         }}
+        style={{ background: "#333130" }}
         options={options}
         optionLabel="name"
         showClear
