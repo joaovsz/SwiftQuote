@@ -7,7 +7,6 @@ export interface Usuario {
   dataCriacao: Date;
 }
 export interface Cotacao {
-  id: number;
   dataCriacao: Date;
   dataValidade: Date;
   status: string;
@@ -19,13 +18,17 @@ export interface Cotacao {
 }
 
 export interface Fornecedor {
-  id: number;
   nome: string;
   cnpj: string;
-  endereco: string;
+  cep: string;
+  logradouro: string;
+  bairro: string;
+  complemento: string;
+  cidade: string;
+  estado: string;
   telefone: string;
   email: string;
-  contatos: Contato[];
+  // contatos: Contato[];
 }
 export interface Contato {
   id: number;

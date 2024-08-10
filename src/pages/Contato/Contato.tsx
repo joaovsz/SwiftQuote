@@ -1,9 +1,10 @@
 import { useForm, SubmitHandler } from "react-hook-form";
-import { addContato } from "../../../firebase/Services/firebaseService";
+import { addContato } from "../../../firebase/Services/createServices";
 import TextField from "../../components/TextField.tsx/TextField";
 import { Contato } from "../../models/Entidades";
 import styles from "./Contato.module.css";
 import CustomButton from "../../components/CustomButton/CustomButton";
+import Select from "../../components/Select/Select";
 const Contatos = () => {
   const { control, handleSubmit, reset } = useForm<Contato>();
 
@@ -16,7 +17,7 @@ const Contatos = () => {
   return (
     <div className={styles.container}>
       <div className={styles.card}>
-        <h1>Cadastro de Contatos</h1>
+        <h2>Cadastro de Contatos</h2>
         <form onSubmit={handleSubmit(onSubmit)}>
           <TextField
             label="Nome"
@@ -42,15 +43,16 @@ const Contatos = () => {
             id="cargo"
             controllerProps={{ control, name: "cargo", defaultValue: "" }}
           />
-          <TextField
+          <Select
             label="ID do Fornecedor"
             name="fornecedorId"
             id="fornecedorId"
             controllerProps={{
               control,
-              name: "fornecedorId",
+              name: "fornecedor",
               defaultValue: "",
             }}
+            options={[{ name: "Fornecedor 1", code: "1" }]}
           />
           <CustomButton style={{ marginTop: "16px" }} label="Cadastrar" />{" "}
         </form>

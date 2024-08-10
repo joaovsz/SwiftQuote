@@ -28,23 +28,21 @@ const TextField = ({
   const { field, fieldState } = useController(controllerProps);
 
   return (
-    <span
-      className={styles.column}
-      style={{ ...style, minWidth: "250px", maxWidth: "500px" }}
-    >
+    <span className={styles.column} style={{ ...style, minWidth: "80px" }}>
       <label htmlFor={id} id={`${id}-label`}>
         {label}
       </label>
       <InputText
+        {...field}
         value={field.value || ""}
         onChange={(e) => {
           field.onChange(e.target.value);
         }}
         className={`${classNames({ "p-invalid": fieldState.error })} `}
         style={{ background: "#333130", color: "#9E9E9E" }}
-        name={name}
+        // name={name}
         id={id}
-        type={type || "text"}
+        type={type}
         placeholder={placeHolder}
       />
       {fieldState.error && (

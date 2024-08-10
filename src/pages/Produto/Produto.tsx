@@ -1,6 +1,6 @@
 import React from "react";
 import { useForm, SubmitHandler } from "react-hook-form";
-import { addProduto } from "../../../firebase/Services/firebaseService";
+import { addProduto } from "../../../firebase/Services/createServices";
 import TextField from "../../components/TextField.tsx/TextField";
 import { Produto } from "../../models/Entidades";
 import styles from "./Produto.module.css";
@@ -9,6 +9,7 @@ const ProdutoPage: React.FC = () => {
   const { control, handleSubmit } = useForm<Produto>();
 
   const onSubmit: SubmitHandler<Produto> = async (data) => {
+    console.log(data);
     await addProduto(data);
   };
 

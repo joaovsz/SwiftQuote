@@ -5,6 +5,7 @@ import { Menu } from "primereact/menu";
 import { Button } from "primereact/button";
 import minimalLogo from "../../assets/minimalLogoWhite.svg";
 import styles from "./Header.module.css";
+import { logout } from "../../../firebase/Services/authService";
 const Header = () => {
   const menu = useRef<Menu>(null);
   const navigate = useNavigate();
@@ -36,8 +37,8 @@ const Header = () => {
     {
       label: "Sair",
       icon: "ri-logout-box-line",
-      command: () => {
-        alert("Saindo...");
+      command: async () => {
+        await logout();
       },
     },
   ];
@@ -48,13 +49,7 @@ const Header = () => {
 
   const end = (
     <>
-      <Menu
-        model={userMenuItems}
-        popup
-        ref={menu}
-        id="popup_menu"
-        
-      />
+      <Menu model={userMenuItems} popup ref={menu} id="popup_menu" />
       <Button
         icon="ri-user-line"
         className="p-button-rounded p-button-secondary p-button-text"

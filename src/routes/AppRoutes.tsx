@@ -9,18 +9,33 @@ import Cotacoes from "../pages/Cotacoes/Cotacoes";
 import Fornecedores from "../pages/Fornecedores/Fornecedores";
 import Produto from "../pages/Produto/Produto";
 import Contato from "../pages/Contato/Contato";
+import SignupPage from "../pages/Signup/Signup";
+import PrivateRoute from "./PrivateRoute";
 
 export const AppRoutes = createBrowserRouter([
   {
     path: "/",
-    element: <Layout />,
+    element: <PrivateRoute />,
     children: [
-      { path: "login", element: <LoginPage /> },
-      { path: "cadastro", element: <div>Cadastro</div> },
-      { path: "cotacoes", element: <Cotacoes /> },
-      { path: "fornecedores", element: <Fornecedores /> },
-      { path: "produtos", element: <Produto /> },
-      { path: "contatos", element: <Contato /> },
+      {
+        path: "/",
+        element: <Layout />,
+        children: [
+          { path: "cadastro", element: <div>Cadastro</div> },
+          { path: "cotacoes", element: <Cotacoes /> },
+          { path: "fornecedores", element: <Fornecedores /> },
+          { path: "produtos", element: <Produto /> },
+          { path: "contatos", element: <Contato /> },
+        ],
+      },
     ],
+  },
+  {
+    path: "/login",
+    element: <LoginPage />,
+  },
+  {
+    path: "/signup",
+    element: <SignupPage />,
   },
 ]);

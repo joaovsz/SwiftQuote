@@ -1,36 +1,44 @@
 import { zodResolver } from "@hookform/resolvers/zod";
-import { useState } from "react";
 import { useForm } from "react-hook-form";
 import { useNavigate } from "react-router-dom";
 
-import { login } from "../../../firebase/Services/authService";
+import { register } from "../../../firebase/Services/authService";
 import CustomButton from "../../components/CustomButton/CustomButton";
 import TextField from "../../components/TextField.tsx/TextField";
-import styles from "./LoginPage.module.css";
-import { loginSchema } from "./Schema";
+import { signupSchema } from "../LoginPage/Schema";
+import styles from "../LoginPage/LoginPage.module.css";
 import { toast } from "react-toastify";
 
-const LoginPage = () => {
-  const { control: controlLogin, handleSubmit: handleSubmitLogin } = useForm<{
-    emailLogin: string;
-    passwordLogin: string;
+const SignupPage = () => {
+  const {
+    control: controlSignup,
+    handleSubmit: handleSubmitSignup,
+    formState: { errors },
+  } = useForm<{
+    emailSignup: string;
+    emailSignup2: string;
+    passwordSignup: string;
+    passwordSignup2: string;
   }>({
-    resolver: zodResolver(loginSchema),
+    mode: "all",
+    resolver: zodResolver(signupSchema),
   });
   const navigate = useNavigate();
-
-  const handleLogin = async (data: {
-    emailLogin: string;
-    passwordLogin: string;
+  const handleCreateAccount = async (data: {
+    emailSignup: string;
+    emailSignup2: string;
+    passwordSignup: string;
+    passwordSignup2: string;
   }) => {
+    console.log("teste");
     try {
-      await login(data.emailLogin, data.passwordLogin);
+      await register(data.emailSignup, data.passwordSignup);
+      toast.success("Conta criada com sucesso!");
       navigate("/");
     } catch (error) {
       toast.error((error as Error).message);
     }
   };
-
   return (
     <>
       <div className={styles.container}>
@@ -46,34 +54,56 @@ const LoginPage = () => {
         <div className={styles.rightContent}>
           <div className={styles.card}>
             {
-              <form onSubmit={handleSubmitLogin(handleLogin)}>
-                <h2>Bem vindo de volta!</h2>
+              <form onSubmit={handleSubmitSignup(handleCreateAccount)}>
+                <h2>Crie sua conta!</h2>
                 <TextField
-                  label="Email"
-                  name="emailLogin"
-                  id="emailLogin"
+                  label="Digite seu email"
+                  name="emailSignup"
+                  id="emailSignup"
                   type="email"
                   controllerProps={{
-                    control: controlLogin,
-                    name: "emailLogin",
+                    control: controlSignup,
+                    name: "emailSignup",
                     defaultValue: "",
                   }}
                 />
                 <TextField
-                  label="Senha"
-                  type="password"
-                  name="passwordLogin"
-                  id="passwordLogin"
+                  label="Digite novamente"
+                  name="emailSignup2"
+                  id="emailSignup2"
+                  type="email"
                   controllerProps={{
-                    control: controlLogin,
-                    name: "passwordLogin",
+                    control: controlSignup,
+                    name: "emailSignup2",
+                    defaultValue: "",
+                  }}
+                />
+                <TextField
+                  label="Crie uma senha"
+                  type="password"
+                  name="passwordSignup"
+                  id="passwordSignup"
+                  controllerProps={{
+                    control: controlSignup,
+                    name: "passwordSignup",
+                    defaultValue: "",
+                  }}
+                />
+                <TextField
+                  label="Confirme a senha"
+                  type="password"
+                  name="passwordSignup2"
+                  id="passwordSignup2"
+                  controllerProps={{
+                    control: controlSignup,
+                    name: "passwordSignup2",
                     defaultValue: "",
                   }}
                 />
                 <div className={styles.operations}>
                   <CustomButton
                     label={"Entrar"}
-                    type="submit"
+                    onClick={() => navigate("/login")}
                     style={{
                       width: "100%",
                       borderRadius: 10,
@@ -82,7 +112,7 @@ const LoginPage = () => {
                   />
                   <CustomButton
                     label={"Criar Conta"}
-                    onClick={() => navigate("/signup")}
+                    type="submit"
                     style={{
                       width: "100%",
                       borderRadius: 10,
@@ -102,4 +132,4 @@ const LoginPage = () => {
   );
 };
 
-export default LoginPage;
+export default SignupPage;
