@@ -5,14 +5,34 @@ import TextField from "../../components/TextField.tsx/TextField";
 import { Produto } from "../../models/Entidades";
 import styles from "./Produto.module.css";
 import CustomButton from "../../components/CustomButton/CustomButton";
+import { toast } from "react-toastify";
 const ProdutoPage: React.FC = () => {
-  const { control, handleSubmit, reset } = useForm<Produto>();
-
+  const { control, handleSubmit, reset } = useForm<Produto>({
+    defaultValues: {
+      nome: "",
+      descricao: "",
+      precoUnitario: 0,
+    },
+  });
+  const [isLoading, setIsLoading] = React.useState(false);
   const onSubmit: SubmitHandler<Produto> = async (data) => {
+    setIsLoading(true);
     try {
+      if (
+        data.nome === "" ||
+        data.descricao === "" ||
+        data.precoUnitario === 0
+      ) {
+        toast.error("Preencha todos os campos!");
+        return;
+      }
       await addProduto(data);
+      setIsLoading(false);
+      toast.success("Produto cadastrado com sucesso!");
       reset();
     } catch (error) {
+      setIsLoading(false);
+
       alert((error as Error).message);
     }
   };
@@ -44,13 +64,9 @@ const ProdutoPage: React.FC = () => {
               defaultValue: "",
             }}
           />
-          <TextField
-            label="Quantidade"
-            name="quantidade"
-            id="quantidade"
-            controllerProps={{ control, name: "quantidade", defaultValue: "" }}
-          />
+
           <CustomButton
+            isLoading={isLoading}
             style={{ marginTop: "16px" }}
             label="Cadastrar Produto"
             type="submit"

@@ -11,6 +11,12 @@ import Produto from "../pages/Produto/Produto";
 import Contato from "../pages/Contato/Contato";
 import SignupPage from "../pages/Signup/Signup";
 import PrivateRoute from "./PrivateRoute";
+import ListagemCotacoes from "../pages/Cotacoes/ListagemCotacoes";
+import ListagemFornecedores from "../pages/Fornecedores/ListagemFornecedores";
+import Requisicao from "../pages/Requisicao/Requisicao";
+import CadastroRequisicao from "../pages/Requisicao/CadastroRequisicao";
+import ListagemProdutos from "../pages/Produto/ListagemProdutos";
+import ListagemContatos from "../pages/Contato/ListagemContatos";
 
 export const AppRoutes = createBrowserRouter([
   {
@@ -22,10 +28,16 @@ export const AppRoutes = createBrowserRouter([
         element: <Layout />,
         children: [
           { path: "cadastro", element: <div>Cadastro</div> },
-          { path: "cotacoes", element: <Cotacoes /> },
-          { path: "fornecedores", element: <Fornecedores /> },
-          { path: "produtos", element: <Produto /> },
-          { path: "contatos", element: <Contato /> },
+          { path: "cotacoes", element: <ListagemCotacoes /> },
+          { path: "cotacoes/cadastro", element: <Cotacoes /> },
+          { path: "fornecedores", element: <ListagemFornecedores /> },
+          { path: "fornecedores/cadastro", element: <Fornecedores /> },
+          { path: "produtos", element: <ListagemProdutos /> },
+          { path: "produtos/cadastro", element: <Produto /> },
+          { path: "contatos", element: <ListagemContatos /> },
+          { path: "contatos/cadastro", element: <Contato /> },
+          { path: "requisicoes", element: <Requisicao /> },
+          { path: "requisicoes/cadastro", element: <CadastroRequisicao /> },
         ],
       },
     ],

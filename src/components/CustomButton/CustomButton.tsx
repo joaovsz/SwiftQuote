@@ -5,6 +5,7 @@ interface CustomButtonProps {
   type?: "submit" | "button";
   style?: React.CSSProperties;
   onClick?: () => void;
+  isLoading?: boolean;
 }
 const CustomButton = ({
   label,
@@ -12,9 +13,13 @@ const CustomButton = ({
   style,
   type = "button",
   className,
+  isLoading,
 }: CustomButtonProps) => {
   return (
     <Button
+      disabled={isLoading}
+      loading={isLoading}
+      loadingIcon="pi pi-spin pi-spinner"
       onClick={onClick}
       type={type}
       style={style}

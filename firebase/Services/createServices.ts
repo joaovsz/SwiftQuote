@@ -7,6 +7,7 @@ import {
   Fornecedor,
   Contato,
   Produto,
+  Requisicao,
 } from "../../src/models/Entidades.ts";
 
 const addDocumentToCollection = async <T extends WithFieldValue<DocumentData>>(
@@ -114,7 +115,25 @@ export const addContato = async (
     throw new Error("Erro ao adicionar contato");
   }
 };
+export const addRequisicao = async (
+  requisicao: Requisicao
+): Promise<{
+  success: boolean;
+  message: string;
+}> => {
+  const myuuid = v4();
 
+  try {
+    return await addDocumentToCollection<Requisicao>(
+      "requisicoes",
+      myuuid.toString(),
+      requisicao
+    );
+  } catch (error) {
+    console.error("Erro ao adicionar contato:", error);
+    throw new Error("Erro ao adicionar contato");
+  }
+};
 export const addProduto = async (
   produto: Produto
 ): Promise<{

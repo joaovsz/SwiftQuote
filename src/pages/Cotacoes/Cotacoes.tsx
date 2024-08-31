@@ -7,6 +7,7 @@ import styles from "./Cotacoes.module.css";
 import CustomButton from "../../components/CustomButton/CustomButton";
 import Select from "../../components/Select/Select";
 import { useEffect, useState } from "react";
+import { Button } from "primereact/button";
 interface Options {
   name: string;
   value: string;

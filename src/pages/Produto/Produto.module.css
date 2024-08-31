@@ -15,9 +15,7 @@
   flex-direction: column;
   gap: 16px;
   width: 500px;
-
   padding: 20px;
-  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
   border-radius: 8px;
 }
 .card form {
@@ -25,13 +23,23 @@
   flex-direction: column;
   gap: 16px;
   width: 100%;
-  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
   border-radius: 8px;
 }
 .field {
   width: 100%;
 }
-
+.mainTable {
+  padding: 20px;
+  position: relative;
+  gap: 20px;
+  top: 30px;
+  display: flex;
+  flex-direction: column;
+  align-items: left;
+  height: calc(100vh - 66px);
+  width: 100vw;
+  border: 1px solid red.;
+}
 .error {
   color: red;
   font-size: 0.875rem;
@@ -41,7 +49,12 @@
 form {
   width: 100%;
 }
-
+.row {
+  width: 100%;
+  display: flex;
+  gap: 8px;
+  justify-content: space-between;
+}
 @media (max-width: 768px) {
   .card {
     max-width: 90%;

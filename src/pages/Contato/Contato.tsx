@@ -5,13 +5,44 @@ import { Contato } from "../../models/Entidades";
 import styles from "./Contato.module.css";
 import CustomButton from "../../components/CustomButton/CustomButton";
 import Select from "../../components/Select/Select";
+import { useState, useEffect } from "react";
+import { fetchFornecedores } from "../../../firebase/Services/fetchServices";
+import { toast } from "react-toastify";
+interface Options {
+  name: string;
+  value: string;
+}
 const Contatos = () => {
-  const { control, handleSubmit, reset } = useForm<Contato>();
+  const { control, handleSubmit, reset, getValues } = useForm();
+  const [fornecedores, setFornecedores] = useState<Options[]>([]);
+  const [isLoading, setIsLoading] = useState(false);
 
-  const onSubmit: SubmitHandler<Contato> = async (data) => {
+  useEffect(() => {
+    fetchFornecedores().then((fornecedores) => {
+      const fornecedorOption = fornecedores.map((fornecedor) => {
+        return { name: fornecedor.nome, value: fornecedor.cnpj };
+      });
+      setFornecedores(fornecedorOption);
+    });
+  }, []);
+
+  const onSubmit = async (data) => {
     console.log(data);
-    await addContato(data);
-    reset();
+    setIsLoading(true);
+    try {
+      await addContato({
+        ...data,
+        fornecedorName: fornecedores
+          .filter((forn) => forn.value === data.fornecedorId)
+          .map((f) => f.name),
+      });
+      reset();
+      toast.success("Contato cadastrado com sucesso!");
+      setIsLoading(false);
+    } catch (error) {
+      setIsLoading(false);
+      toast.error((error as Error).message);
+    }
   };
 
   return (
@@ -44,17 +75,22 @@ const Contatos = () => {
             controllerProps={{ control, name: "cargo", defaultValue: "" }}
           />
           <Select
-            label="ID do Fornecedor"
+            options={fornecedores}
+            label="Fornecedor"
             name="fornecedorId"
             id="fornecedorId"
             controllerProps={{
               control,
-              name: "fornecedor",
+              name: "fornecedorId",
               defaultValue: "",
             }}
-            options={[{ name: "Fornecedor 1", code: "1" }]}
           />
-          <CustomButton style={{ marginTop: "16px" }} label="Cadastrar" />{" "}
+          <CustomButton
+            style={{ marginTop: "16px" }}
+            label="Cadastrar"
+            isLoading={isLoading}
+            type="submit"
+          />{" "}
         </form>
       </div>
     </div>

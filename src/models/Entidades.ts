@@ -5,6 +5,15 @@ export interface Usuario {
   telefone?: string;
   role: "admin" | "common";
 }
+export interface Requisicao {
+  id: string;
+  dataCriacao: Date;
+  titulo: string;
+  cotacoes: number;
+  status: string;
+  usuarioId: string;
+  idProduto: string;
+}
 export interface Cotacao {
   dataCriacao: Date;
   dataValidade: Date;
@@ -36,12 +45,12 @@ export interface Contato {
   email: string;
   cargo: string;
   fornecedorId: number;
+  fornecedorName?: string;
 }
 export interface Produto {
   id: number;
   nome: string;
   descricao: string;
   precoUnitario: number;
-  quantidade: number;
   cotacaoId?: number;
 }

@@ -39,7 +39,7 @@ const TextField = ({
           field.onChange(e.target.value);
         }}
         className={`${classNames({ "p-invalid": fieldState.error })} `}
-        style={{ background: "#333130", color: "#9E9E9E" }}
+        style={{ background: "#333130", color: "#9E9E9E", height: "50px" }}
         // name={name}
         id={id}
         type={type}

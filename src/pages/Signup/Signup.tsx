@@ -8,9 +8,11 @@ import TextField from "../../components/TextField.tsx/TextField";
 import { signupSchema } from "../LoginPage/Schema";
 import styles from "../LoginPage/LoginPage.module.css";
 import { toast } from "react-toastify";
+import { useState } from "react";
 
 const SignupPage = () => {
   const location = useLocation();
+  const [isLoading, setIsLoading] = useState(false);
   const { control: controlSignup, handleSubmit: handleSubmitSignup } = useForm<{
     nomeDeUsuario: string;
     emailSignup: string;
@@ -32,14 +34,19 @@ const SignupPage = () => {
     phoneNumber: string;
   }) => {
     console.log("teste");
+    setIsLoading(true);
     try {
       await register(data.emailSignup, data.passwordSignup, {
         nome: data.nomeDeUsuario,
         telefone: data.phoneNumber,
         role: location.state.isAdmin ? "admin" : "common",
       });
+      setIsLoading(false);
+
       toast.success("Conta criada com sucesso!");
     } catch (error) {
+      setIsLoading(false);
+
       toast.error((error as Error).message);
     }
   };
@@ -145,6 +152,7 @@ const SignupPage = () => {
                   <CustomButton
                     label={"Criar Conta"}
                     type="submit"
+                    isLoading={isLoading}
                     style={{
                       width: "100%",
                       borderRadius: 10,

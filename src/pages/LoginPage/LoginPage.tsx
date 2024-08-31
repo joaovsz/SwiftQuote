@@ -18,6 +18,8 @@ const LoginPage = () => {
   }>({
     resolver: zodResolver(loginSchema),
   });
+  const [isLoading, setIsLoading] = useState(false);
+
   const { setIsAdmin } = useAuth();
   const navigate = useNavigate();
 
@@ -25,11 +27,15 @@ const LoginPage = () => {
     emailLogin: string;
     passwordLogin: string;
   }) => {
+    setIsLoading(true);
     try {
       const res = await login(data.emailLogin, data.passwordLogin);
       res?.role === "admin" ? setIsAdmin(true) : setIsAdmin(false);
       navigate("/");
+      setIsLoading(false);
     } catch (error) {
+      setIsLoading(false);
+
       toast.error((error as Error).message);
     }
   };
@@ -77,6 +83,7 @@ const LoginPage = () => {
                   <CustomButton
                     label={"Entrar"}
                     type="submit"
+                    isLoading={isLoading}
                     style={{
                       width: "100%",
                       borderRadius: 10,

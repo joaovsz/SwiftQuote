@@ -6,6 +6,7 @@ import {
   Fornecedor,
   Contato,
   Produto,
+  Requisicao,
 } from "../../src/models/Entidades.ts";
 
 const fetchCollection = async <T>(collectionName: string): Promise<T[]> => {
@@ -25,7 +26,9 @@ export const fetchUsuarios = async (): Promise<Usuario[]> => {
 export const fetchCotacoes = async (): Promise<Cotacao[]> => {
   return fetchCollection<Cotacao>("cotacoes");
 };
-
+export const fetchRequisicoes = async (): Promise<Requisicao[]> => {
+  return fetchCollection<Requisicao>("requisicoes");
+};
 export const fetchFornecedores = async (): Promise<Fornecedor[]> => {
   return fetchCollection<Fornecedor>("fornecedores");
 };

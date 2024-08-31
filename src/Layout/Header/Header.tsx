@@ -14,6 +14,11 @@ const Header = () => {
   const { isAdmin } = useAuth();
   const items = [
     {
+      label: "Requisições",
+      icon: "ri-file-list-line",
+      command: () => navigate("/requisicoes"),
+    },
+    {
       label: "Cotações",
       icon: "ri-file-list-line",
       command: () => navigate("/cotacoes"),

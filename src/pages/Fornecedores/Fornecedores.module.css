@@ -9,6 +9,18 @@
   align-items: center;
 }
 
+.mainTable {
+  padding: 20px;
+  position: relative;
+  gap: 20px;
+  top: 30px;
+  display: flex;
+  flex-direction: column;
+  align-items: left;
+  height: calc(100vh - 66px);
+  width: 100vw;
+  border: 1px solid red.;
+}
 .card {
   min-width: 290px;
   display: flex;
@@ -17,7 +29,6 @@
   width: 80%;
   padding: 20px;
   max-width: 100%;
-  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
   border-radius: 8px;
 }
 .card form {
@@ -26,7 +37,6 @@
   gap: 32px;
   width: 100%;
   align-items: flex-end;
-  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
   border-radius: 8px;
 }
 .field {
