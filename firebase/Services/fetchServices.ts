@@ -1,4 +1,4 @@
-import { collection, getDocs } from "firebase/firestore";
+import { collection, getDocs, query, where } from "firebase/firestore";
 import { db } from "../firebaseConfig.ts";
 import {
   Usuario,
@@ -36,4 +36,24 @@ export const fetchContatos = async (): Promise<Contato[]> => {
 
 export const fetchProdutos = async (): Promise<Produto[]> => {
   return fetchCollection<Produto>("produtos");
+};
+
+export const getCotacoesPorProduto = async (
+  produtoId: number
+): Promise<Cotacao[]> => {
+  try {
+    const q = query(
+      collection(db, "cotacoes"),
+      where("produtos.id", "==", produtoId)
+    );
+    const querySnapshot = await getDocs(q);
+    const cotacoes: Cotacao[] = [];
+    querySnapshot.forEach((doc) => {
+      cotacoes.push(doc.data() as Cotacao);
+    });
+    return cotacoes;
+  } catch (error) {
+    console.error("Erro ao consultar cotações: ", error);
+    return [];
+  }
 };

@@ -1,8 +1,8 @@
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
-import { useNavigate } from "react-router-dom";
+import { useLocation, useNavigate } from "react-router-dom";
 
-import { register } from "../../../firebase/Services/authService";
+import { login, register } from "../../../firebase/Services/authService";
 import CustomButton from "../../components/CustomButton/CustomButton";
 import TextField from "../../components/TextField.tsx/TextField";
 import { signupSchema } from "../LoginPage/Schema";
@@ -10,31 +10,35 @@ import styles from "../LoginPage/LoginPage.module.css";
 import { toast } from "react-toastify";
 
 const SignupPage = () => {
-  const {
-    control: controlSignup,
-    handleSubmit: handleSubmitSignup,
-    formState: { errors },
-  } = useForm<{
+  const location = useLocation();
+  const { control: controlSignup, handleSubmit: handleSubmitSignup } = useForm<{
+    nomeDeUsuario: string;
     emailSignup: string;
     emailSignup2: string;
     passwordSignup: string;
     passwordSignup2: string;
+    phoneNumber: string;
   }>({
     mode: "all",
     resolver: zodResolver(signupSchema),
   });
   const navigate = useNavigate();
   const handleCreateAccount = async (data: {
+    nomeDeUsuario: string;
     emailSignup: string;
     emailSignup2: string;
     passwordSignup: string;
     passwordSignup2: string;
+    phoneNumber: string;
   }) => {
     console.log("teste");
     try {
-      await register(data.emailSignup, data.passwordSignup);
+      await register(data.emailSignup, data.passwordSignup, {
+        nome: data.nomeDeUsuario,
+        telefone: data.phoneNumber,
+        role: location.state.isAdmin ? "admin" : "common",
+      });
       toast.success("Conta criada com sucesso!");
-      navigate("/");
     } catch (error) {
       toast.error((error as Error).message);
     }
@@ -55,29 +59,56 @@ const SignupPage = () => {
           <div className={styles.card}>
             {
               <form onSubmit={handleSubmitSignup(handleCreateAccount)}>
-                <h2>Crie sua conta!</h2>
-                <TextField
-                  label="Digite seu email"
-                  name="emailSignup"
-                  id="emailSignup"
-                  type="email"
-                  controllerProps={{
-                    control: controlSignup,
-                    name: "emailSignup",
-                    defaultValue: "",
-                  }}
-                />
-                <TextField
-                  label="Digite novamente"
-                  name="emailSignup2"
-                  id="emailSignup2"
-                  type="email"
-                  controllerProps={{
-                    control: controlSignup,
-                    name: "emailSignup2",
-                    defaultValue: "",
-                  }}
-                />
+                <h2>Crie sua conta de colaborador!</h2>
+                <div className={styles.row}>
+                  <TextField
+                    label="Nome de usuário"
+                    name="emailSignup"
+                    id="emailSignup"
+                    type="string"
+                    controllerProps={{
+                      control: controlSignup,
+                      name: "nomeDeUsuario",
+                      defaultValue: "",
+                    }}
+                  />
+                  <TextField
+                    label="Telefone"
+                    name="telefone"
+                    id="telefone"
+                    type="string"
+                    controllerProps={{
+                      control: controlSignup,
+                      name: "phoneNumber",
+                      defaultValue: "",
+                    }}
+                  />
+                </div>
+                <div className={styles.row}>
+                  <TextField
+                    label="Digite seu email"
+                    name="emailSignup"
+                    id="emailSignup"
+                    type="email"
+                    controllerProps={{
+                      control: controlSignup,
+                      name: "emailSignup",
+                      defaultValue: "",
+                    }}
+                  />
+                  <TextField
+                    label="Digite novamente"
+                    name="emailSignup2"
+                    id="emailSignup2"
+                    type="email"
+                    controllerProps={{
+                      control: controlSignup,
+                      name: "emailSignup2",
+                      defaultValue: "",
+                    }}
+                  />
+                </div>
+
                 <TextField
                   label="Crie uma senha"
                   type="password"
@@ -100,6 +131,7 @@ const SignupPage = () => {
                     defaultValue: "",
                   }}
                 />
+
                 <div className={styles.operations}>
                   <CustomButton
                     label={"Entrar"}

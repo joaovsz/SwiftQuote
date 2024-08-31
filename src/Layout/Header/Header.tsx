@@ -6,10 +6,12 @@ import { Button } from "primereact/button";
 import minimalLogo from "../../assets/minimalLogoWhite.svg";
 import styles from "./Header.module.css";
 import { logout } from "../../../firebase/Services/authService";
+import { useAuth } from "../../context/AuthContext";
+import { toast } from "react-toastify";
 const Header = () => {
   const menu = useRef<Menu>(null);
   const navigate = useNavigate();
-
+  const { isAdmin } = useAuth();
   const items = [
     {
       label: "Cotações",
@@ -34,6 +36,15 @@ const Header = () => {
   ];
 
   const userMenuItems = [
+    {
+      label: "Criar conta de administrador",
+      icon: "pi pi-user",
+      command: () => {
+        isAdmin
+          ? navigate("/signup", { state: { isAdmin: true } })
+          : toast.error("Você não tem permissão para acessar essa página");
+      },
+    },
     {
       label: "Sair",
       icon: "ri-logout-box-line",

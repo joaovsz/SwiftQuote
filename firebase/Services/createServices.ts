@@ -37,12 +37,10 @@ export const addUsuario = async (
   success: boolean;
   message: string;
 }> => {
-  const myuuid = v4();
-
   try {
     const result = await addDocumentToCollection<Usuario>(
       "usuarios",
-      myuuid.toString(),
+      usuario.id,
       usuario
     );
     console.log(result.message);

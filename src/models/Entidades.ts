@@ -1,10 +1,9 @@
 export interface Usuario {
-  id: number;
+  id: string;
   nome: string;
-  email: string;
-  senha: string;
-  telefone?: string;
   dataCriacao: Date;
+  telefone?: string;
+  role: "admin" | "common";
 }
 export interface Cotacao {
   dataCriacao: Date;

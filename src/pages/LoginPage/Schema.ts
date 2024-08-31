@@ -13,6 +13,8 @@ export const signupSchema = z
       .string()
       .min(6, "A senha deve ter pelo menos 6 caracteres"),
     passwordSignup2: z.string(),
+    nomeDeUsuario: z.string().min(3, "Nome de usuário é obrigatório"),
+    phoneNumber: z.string().min(8, "Telefone é obrigatório"),
   })
   .superRefine((data, ctx) => {
     if (data.emailSignup !== data.emailSignup2) {

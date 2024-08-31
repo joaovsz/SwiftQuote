@@ -9,6 +9,7 @@ import TextField from "../../components/TextField.tsx/TextField";
 import styles from "./LoginPage.module.css";
 import { loginSchema } from "./Schema";
 import { toast } from "react-toastify";
+import { useAuth } from "../../context/AuthContext";
 
 const LoginPage = () => {
   const { control: controlLogin, handleSubmit: handleSubmitLogin } = useForm<{
@@ -17,6 +18,7 @@ const LoginPage = () => {
   }>({
     resolver: zodResolver(loginSchema),
   });
+  const { setIsAdmin } = useAuth();
   const navigate = useNavigate();
 
   const handleLogin = async (data: {
@@ -24,7 +26,8 @@ const LoginPage = () => {
     passwordLogin: string;
   }) => {
     try {
-      await login(data.emailLogin, data.passwordLogin);
+      const res = await login(data.emailLogin, data.passwordLogin);
+      res?.role === "admin" ? setIsAdmin(true) : setIsAdmin(false);
       navigate("/");
     } catch (error) {
       toast.error((error as Error).message);
@@ -82,7 +85,9 @@ const LoginPage = () => {
                   />
                   <CustomButton
                     label={"Criar Conta"}
-                    onClick={() => navigate("/signup")}
+                    onClick={() =>
+                      navigate("/signup", { state: { isAdmin: false } })
+                    }
                     style={{
                       width: "100%",
                       borderRadius: 10,

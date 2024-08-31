@@ -2,12 +2,22 @@ import {
   createUserWithEmailAndPassword,
   signInWithEmailAndPassword,
   signOut,
-  UserCredential,
 } from "firebase/auth";
-import { auth } from "../firebaseConfig";
+import { auth, db } from "../firebaseConfig";
+import { Usuario } from "../../src/models/Entidades";
+import { addUsuario } from "./createServices";
+import { doc, getDoc } from "firebase/firestore";
+
 export const login = async (email: string, password: string) => {
   try {
-    await signInWithEmailAndPassword(auth, email, password);
+    const userCredential = await signInWithEmailAndPassword(
+      auth,
+      email,
+      password
+    );
+    const { uid } = userCredential.user;
+    const usuarioData = await getUsuarioData(uid);
+    return usuarioData;
   } catch (error: any) {
     if (error.code === "auth/user-not-found") {
       throw new Error("Usuário não encontrado.");
@@ -22,7 +32,22 @@ export const login = async (email: string, password: string) => {
     }
   }
 };
+export const getUsuarioData = async (uid: string): Promise<Usuario | null> => {
+  const usuarioDocRef = doc(db, "usuarios", uid);
+  try {
+    const usuarioDoc = await getDoc(usuarioDocRef);
 
+    if (usuarioDoc.exists()) {
+      return usuarioDoc.data() as Usuario;
+    } else {
+      console.log("Documento de usuário não encontrado.");
+      return null;
+    }
+  } catch (error) {
+    console.error("Erro ao buscar os dados do usuário:", error);
+    throw new Error("Erro ao buscar os dados do usuário.");
+  }
+};
 export const logout = async (): Promise<void> => {
   try {
     await signOut(auth);
@@ -31,9 +56,29 @@ export const logout = async (): Promise<void> => {
   }
 };
 
-export const register = async (email: string, password: string) => {
+export const register = async (
+  email: string,
+  password: string,
+  usuarioData: Omit<Usuario, "id" | "dataCriacao">
+) => {
   try {
-    await createUserWithEmailAndPassword(auth, email, password);
+    const userCredential = await createUserWithEmailAndPassword(
+      auth,
+      email,
+      password
+    );
+    const { uid } = userCredential.user;
+    console.log("uid", uid);
+    const usuario: Usuario = {
+      ...usuarioData,
+      id: uid,
+      dataCriacao: new Date(),
+    };
+    const result = await addUsuario(usuario);
+
+    if (!result.success) {
+      throw new Error(result.message);
+    }
   } catch (error: any) {
     if (error.code === "auth/email-already-in-use") {
       throw new Error("Este email já está em uso. Por favor, use outro email.");
