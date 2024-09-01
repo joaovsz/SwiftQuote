@@ -20,6 +20,7 @@ export const AuthProvider = ({ children }) => {
   useEffect(() => {
     const unsubscribe = onAuthStateChanged(auth, (user) => {
       setUser(user);
+      console.log(user);
       setLoading(false);
     });
 
@@ -27,7 +28,9 @@ export const AuthProvider = ({ children }) => {
   }, []);
 
   return (
-    <AuthContext.Provider value={{ user, loading, isAuthenticated: !!user, isAdmin, setIsAdmin }}>
+    <AuthContext.Provider
+      value={{ user, loading, isAuthenticated: !!user, isAdmin, setIsAdmin }}
+    >
       {children}
     </AuthContext.Provider>
   );

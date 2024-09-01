@@ -1,4 +1,5 @@
 import { setDoc, doc, WithFieldValue, DocumentData } from "firebase/firestore";
+import { getAuth } from "firebase/auth";
 import { db } from "../firebaseConfig.ts";
 import { v4 } from "uuid";
 import {
@@ -19,6 +20,7 @@ const addDocumentToCollection = async <T extends WithFieldValue<DocumentData>>(
   message: string;
 }> => {
   try {
+    console.log(id);
     await setDoc(doc(db, collectionName, id), data);
     return {
       success: true,
@@ -108,7 +110,6 @@ export const addContato = async (
       myuuid.toString(),
       contato
     );
-    console.log(result.message);
     return result;
   } catch (error) {
     console.error("Erro ao adicionar contato:", error);
@@ -124,11 +125,13 @@ export const addRequisicao = async (
   const myuuid = v4();
 
   try {
-    return await addDocumentToCollection<Requisicao>(
+    console.log(requisicao);
+    const result = await addDocumentToCollection<Requisicao>(
       "requisicoes",
       myuuid.toString(),
       requisicao
     );
+    return result;
   } catch (error) {
     console.error("Erro ao adicionar contato:", error);
     throw new Error("Erro ao adicionar contato");

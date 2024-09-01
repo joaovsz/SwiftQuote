@@ -1,13 +1,18 @@
 import { SubmitHandler, useForm } from "react-hook-form";
 import TextField from "../../components/TextField.tsx/TextField";
 import { addCotacao } from "../../../firebase/Services/createServices";
-import { fetchFornecedores } from "../../../firebase/Services/fetchServices";
+import {
+  fetchFornecedores,
+  fetchRequisicoes,
+} from "../../../firebase/Services/fetchServices";
 import { Cotacao } from "../../models/Entidades";
 import styles from "./Cotacoes.module.css";
 import CustomButton from "../../components/CustomButton/CustomButton";
 import Select from "../../components/Select/Select";
 import { useEffect, useState } from "react";
 import { Button } from "primereact/button";
+import { toast } from "react-toastify";
+import { useNavigate } from "react-router-dom";
 interface Options {
   name: string;
   value: string;
@@ -15,6 +20,8 @@ interface Options {
 const Cotacoes = () => {
   const { control, handleSubmit } = useForm<Cotacao>();
   const [fornecedores, setFornecedores] = useState<Options[]>([]);
+  const [requisicoes, setRequisicoes] = useState<Options[]>([]);
+  const navigate = useNavigate();
   useEffect(() => {
     fetchFornecedores().then((fornecedores) => {
       const fornecedorOption = fornecedores.map((fornecedor) => {
@@ -22,9 +29,35 @@ const Cotacoes = () => {
       });
       setFornecedores(fornecedorOption);
     });
+    fetchRequisicoes().then((requisicoes) => {
+      const requisicoesOption = requisicoes.map((requisicao) => {
+        return {
+          name: requisicao.produtoName + " - " + requisicao.titulo,
+          value: requisicao.id,
+        };
+      });
+      setRequisicoes(requisicoesOption);
+    });
   }, []);
   const onSubmit: SubmitHandler<Cotacao> = async (data) => {
-    await addCotacao(data);
+    const fornecedor = fornecedores.find(
+      (forn) => forn.value === data.fornecedorId
+    );
+    try {
+      await addCotacao({
+        ...data,
+        dataCriacao: data.dataCriacao,
+        dataValidade: data.dataValidade,
+        fornecedorName: fornecedor?.name,
+        requisicaoTitulo: requisicoes.find(
+          (req) => req.value === data.requisicao
+        )?.name,
+      });
+      toast.success("Cotação cadastrada com sucesso!");
+      navigate(-1);
+    } catch (error) {
+      toast.error((error as Error).message);
+    }
   };
 
   return (
@@ -33,13 +66,14 @@ const Cotacoes = () => {
         <h2>Cadastro de Cotação</h2>
         <form onSubmit={handleSubmit(onSubmit)}>
           <div className={styles.row}>
-            <TextField
-              label="Produto"
-              name="produto"
-              id="produto"
+            <Select
+              options={requisicoes}
+              label="Requisição"
+              name="requisicao"
+              id="requisicao"
               controllerProps={{
                 control,
-                name: "produto",
+                name: "requisicao",
                 defaultValue: "",
               }}
             />
@@ -67,7 +101,12 @@ const Cotacoes = () => {
             />
           </div>
           <div className={styles.row}>
-            <TextField
+            <Select
+              options={[
+                { name: "Aberta", value: "Aberta" },
+                { name: "Em cotação", value: "Em cotação" },
+                { name: "Cotada", value: "Cotada" },
+              ]}
               label="Status"
               name="status"
               id="status"
@@ -110,7 +149,11 @@ const Cotacoes = () => {
               }}
             />
           </div>
-          <CustomButton style={{ marginTop: "16px" }} label="Cadastrar" />{" "}
+          <CustomButton
+            style={{ marginTop: "16px" }}
+            label="Cadastrar"
+            type="submit"
+          />{" "}
         </form>
       </div>
     </div>

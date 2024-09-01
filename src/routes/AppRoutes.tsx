@@ -13,10 +13,10 @@ import SignupPage from "../pages/Signup/Signup";
 import PrivateRoute from "./PrivateRoute";
 import ListagemCotacoes from "../pages/Cotacoes/ListagemCotacoes";
 import ListagemFornecedores from "../pages/Fornecedores/ListagemFornecedores";
-import Requisicao from "../pages/Requisicao/Requisicao";
 import CadastroRequisicao from "../pages/Requisicao/CadastroRequisicao";
 import ListagemProdutos from "../pages/Produto/ListagemProdutos";
 import ListagemContatos from "../pages/Contato/ListagemContatos";
+import RequisicaoListagem from "../pages/Requisicao/Requisicao";
 
 export const AppRoutes = createBrowserRouter([
   {
@@ -36,7 +36,7 @@ export const AppRoutes = createBrowserRouter([
           { path: "produtos/cadastro", element: <Produto /> },
           { path: "contatos", element: <ListagemContatos /> },
           { path: "contatos/cadastro", element: <Contato /> },
-          { path: "requisicoes", element: <Requisicao /> },
+          { path: "requisicoes", element: <RequisicaoListagem /> },
           { path: "requisicoes/cadastro", element: <CadastroRequisicao /> },
         ],
       },

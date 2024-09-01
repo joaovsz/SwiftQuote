@@ -9,20 +9,25 @@ export interface Requisicao {
   id: string;
   dataCriacao: Date;
   titulo: string;
-  cotacoes: number;
+  cotacoes?: string;
   status: string;
   usuarioId: string;
+  usuarioName?: string;
+  produtoName?: string;
   idProduto: string;
 }
 export interface Cotacao {
   dataCriacao: Date;
-  dataValidade: Date;
+  dataValidade?: Date;
   status: string;
-  total: number;
+  total: string;
   observacoes: string;
-  usuarioId: number;
-  fornecedorId: number;
-  produtos: Produto[];
+  usuarioId: string;
+  fornecedorId: string;
+  fornecedorName?: string;
+  requisicaoTitulo?: string;
+  requisicao: string;
+  id: string;
 }
 
 export interface Fornecedor {
@@ -39,7 +44,7 @@ export interface Fornecedor {
   // contatos: Contato[];
 }
 export interface Contato {
-  id: number;
+  id: string;
   nome: string;
   telefone: string;
   email: string;
@@ -48,7 +53,7 @@ export interface Contato {
   fornecedorName?: string;
 }
 export interface Produto {
-  id: number;
+  id: string;
   nome: string;
   descricao: string;
   precoUnitario: number;

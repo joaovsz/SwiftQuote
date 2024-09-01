@@ -1,9 +1,9 @@
-import { useRef } from "react";
+import { useEffect, useRef } from "react";
 import { useNavigate } from "react-router-dom";
 import { Menubar } from "primereact/menubar";
 import { Menu } from "primereact/menu";
 import { Button } from "primereact/button";
-import minimalLogo from "../../assets/minimalLogoWhite.svg";
+import Slogo from "../../assets/SLogo.png";
 import styles from "./Header.module.css";
 import { logout } from "../../../firebase/Services/authService";
 import { useAuth } from "../../context/AuthContext";
@@ -12,6 +12,10 @@ const Header = () => {
   const menu = useRef<Menu>(null);
   const navigate = useNavigate();
   const { isAdmin } = useAuth();
+
+  useEffect(() => {
+    console.log(isAdmin);
+  }, []);
   const items = [
     {
       label: "Requisições",
@@ -60,7 +64,10 @@ const Header = () => {
   ];
 
   const start = (
-    <img alt="logo" src={minimalLogo} height="30" className="mr-2" />
+    <div style={{ display: "flex", alignItems: "center" }}>
+      <img alt="logo" src={Slogo} height="30" className="mr-2" />
+      <span style={{ fontWeight: "bold" }}>Swift Quote</span>
+    </div>
   );
 
   const end = (
