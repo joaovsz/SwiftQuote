@@ -13,9 +13,6 @@ const Header = () => {
   const navigate = useNavigate();
   const { isAdmin } = useAuth();
 
-  useEffect(() => {
-    console.log(isAdmin);
-  }, []);
   const items = [
     {
       label: "Requisições",
