@@ -5,7 +5,7 @@ import {
   fetchFornecedores,
   fetchRequisicoes,
 } from "../../../firebase/Services/fetchServices";
-import { Cotacao } from "../../models/Entidades";
+import { Cotacao, Requisicao } from "../../models/Entidades";
 import styles from "./Cotacoes.module.css";
 import CustomButton from "../../components/CustomButton/CustomButton";
 import Select from "../../components/Select/Select";
@@ -21,6 +21,7 @@ const Cotacoes = () => {
   const { control, handleSubmit } = useForm<Cotacao>();
   const [fornecedores, setFornecedores] = useState<Options[]>([]);
   const [requisicoes, setRequisicoes] = useState<Options[]>([]);
+  const [requisicoestruth, setRequisicoestruth] = useState<Requisicao[]>([]);
   const navigate = useNavigate();
   useEffect(() => {
     fetchFornecedores().then((fornecedores) => {
@@ -30,7 +31,13 @@ const Cotacoes = () => {
       setFornecedores(fornecedorOption);
     });
     fetchRequisicoes().then((requisicoes) => {
-      const requisicoesOption = requisicoes.map((requisicao) => {
+      const filteredRequisicoes = requisicoes.filter(
+        (requisicao) =>
+          requisicao.countCotacoes < 3 || requisicao.countCotacoes == null
+      );
+      setRequisicoestruth(filteredRequisicoes);
+      const requisicoesOption = filteredRequisicoes.map((requisicao) => {
+        console.log(requisicao.id);
         return {
           name: requisicao.produtoName + " - " + requisicao.titulo,
           value: requisicao.id,
@@ -44,15 +51,24 @@ const Cotacoes = () => {
       (forn) => forn.value === data.fornecedorId
     );
     try {
-      await addCotacao({
-        ...data,
-        dataCriacao: data.dataCriacao,
-        dataValidade: data.dataValidade,
-        fornecedorName: fornecedor?.name,
-        requisicaoTitulo: requisicoes.find(
-          (req) => req.value === data.requisicao
-        )?.name,
-      });
+      await addCotacao(
+        {
+          ...data,
+          dataCriacao: data.dataCriacao,
+          dataValidade: data.dataValidade,
+          fornecedorName: fornecedor?.name,
+          requisicao: requisicoes.find((req) => req.value === data.requisicao)
+            ?.value!,
+          requisicaoTitulo: requisicoes.find(
+            (req) => req.value === data.requisicao
+          )?.name,
+        },
+        requisicoestruth.find((req) => req.id === data.requisicao) == null
+          ? 1
+          : requisicoestruth.find((req) => req.id === data.requisicao)!
+              .countCotacoes + 1
+      );
+
       toast.success("Cotação cadastrada com sucesso!");
       navigate(-1);
     } catch (error) {
@@ -101,17 +117,6 @@ const Cotacoes = () => {
             />
           </div>
           <div className={styles.row}>
-            <Select
-              options={[
-                { name: "Aberta", value: "Aberta" },
-                { name: "Em cotação", value: "Em cotação" },
-                { name: "Cotada", value: "Cotada" },
-              ]}
-              label="Status"
-              name="status"
-              id="status"
-              controllerProps={{ control, name: "status", defaultValue: "" }}
-            />
             <TextField
               label="Total"
               name="total"

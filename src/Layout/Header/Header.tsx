@@ -15,29 +15,40 @@ const Header = () => {
 
   const items = [
     {
+      id: "req",
       label: "Requisições",
       icon: "ri-file-list-line",
       command: () => navigate("/requisicoes"),
     },
     {
+      id: "cot",
       label: "Cotações",
       icon: "ri-file-list-line",
       command: () => navigate("/cotacoes"),
     },
     {
+      id: "contacts",
       label: "Contatos",
       icon: "ri-file-list-line",
       command: () => navigate("/contatos"),
     },
     {
+      id: "prod",
       label: "Produtos",
       icon: "ri-file-list-line",
       command: () => navigate("/produtos"),
     },
     {
+      id: "forn",
       label: "Fornecedores",
       icon: "ri-contacts-line",
       command: () => navigate("/fornecedores"),
+    },
+    {
+      id: "users",
+      label: "Usuários",
+      icon: "ri-user-line",
+      command: () => navigate("/usuarios"),
     },
   ];
 
@@ -79,7 +90,12 @@ const Header = () => {
   );
 
   return (
-    <Menubar model={items} start={start} end={end} className={styles.header} />
+    <Menubar
+      model={isAdmin ? items : items.filter((i) => i.id == "req")}
+      start={start}
+      end={end}
+      className={styles.header}
+    />
   );
 };
 

@@ -2,15 +2,18 @@ export interface Usuario {
   id: string;
   nome: string;
   dataCriacao: Date;
+  blocked: boolean;
   telefone?: string;
   role: "admin" | "common";
 }
 export interface Requisicao {
   id: string;
+  idReq: string;
   dataCriacao: Date;
   titulo: string;
   cotacoes?: string;
   status: string;
+  countCotacoes: number;
   usuarioId: string;
   usuarioName?: string;
   produtoName?: string;

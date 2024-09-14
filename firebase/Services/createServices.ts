@@ -10,6 +10,7 @@ import {
   Produto,
   Requisicao,
 } from "../../src/models/Entidades.ts";
+import { updateReqCount } from "./fetchServices";
 
 const addDocumentToCollection = async <T extends WithFieldValue<DocumentData>>(
   collectionName: string,
@@ -20,7 +21,6 @@ const addDocumentToCollection = async <T extends WithFieldValue<DocumentData>>(
   message: string;
 }> => {
   try {
-    console.log(id);
     await setDoc(doc(db, collectionName, id), data);
     return {
       success: true,
@@ -55,7 +55,8 @@ export const addUsuario = async (
 };
 
 export const addCotacao = async (
-  cotacao: Cotacao
+  cotacao: Cotacao,
+  count: number
 ): Promise<{
   success: boolean;
   message: string;
@@ -68,7 +69,7 @@ export const addCotacao = async (
       myuuid.toString(),
       cotacao
     );
-    console.log(result.message);
+    await updateReqCount(cotacao.requisicao, count);
     return result;
   } catch (error) {
     console.error("Erro ao adicionar cotacao:", error);

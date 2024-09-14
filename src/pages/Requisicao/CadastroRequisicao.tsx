@@ -46,10 +46,11 @@ function CadastroRequisicao() {
       await addRequisicao({
         ...data,
         usuarioId: user?.uid!,
+        idReq: Math.random().toString(36).substr(2, 9),
         usuarioName: user?.displayName!,
         produtoName: produto?.name,
         dataCriacao: new Date(),
-        cotacoes: "",
+        countCotacoes: 0,
         status: "Aberta",
       });
       toast.success("Requisição cadastrada com sucesso!");

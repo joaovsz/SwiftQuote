@@ -17,6 +17,7 @@ import CadastroRequisicao from "../pages/Requisicao/CadastroRequisicao";
 import ListagemProdutos from "../pages/Produto/ListagemProdutos";
 import ListagemContatos from "../pages/Contato/ListagemContatos";
 import RequisicaoListagem from "../pages/Requisicao/Requisicao";
+import Usuarios from "../pages/Usuarios/Usuarios";
 
 export const AppRoutes = createBrowserRouter([
   {
@@ -38,6 +39,7 @@ export const AppRoutes = createBrowserRouter([
           { path: "contatos/cadastro", element: <Contato /> },
           { path: "requisicoes", element: <RequisicaoListagem /> },
           { path: "requisicoes/cadastro", element: <CadastroRequisicao /> },
+          { path: "usuarios", element: <Usuarios /> },
         ],
       },
     ],

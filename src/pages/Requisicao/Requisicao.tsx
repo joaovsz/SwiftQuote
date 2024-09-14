@@ -4,17 +4,35 @@ import { Requisicao } from "../../models/Entidades";
 import CustomButton from "../../components/CustomButton/CustomButton";
 import styles from "./Requisicao.module.css";
 import CustomTable from "../../components/Table/CustomTable";
-import { fetchRequisicoes } from "../../../firebase/Services/fetchServices";
+import {
+  excludeReq,
+  fetchRequisicoes,
+} from "../../../firebase/Services/fetchServices";
+import { Button } from "primereact/button";
 
 function RequisicaoListagem() {
   const navigate = useNavigate();
   const [requisicoes, setRequisicoes] = useState<Requisicao[]>([]);
+  const [refresh, setRefresh] = useState(false);
   useEffect(() => {
     fetchRequisicoes().then((requisicoes) => {
-
       setRequisicoes(requisicoes);
     });
-  }, []);
+  }, [excludeReq]);
+
+  const actionTemplate = (rowData: Requisicao) => {
+    return (
+      <Button
+        icon="pi pi-trash"
+        className={"p-button-danger"}
+        onClick={async () => {
+          await excludeReq(rowData.id);
+          setRefresh(!refresh);
+        }}
+        label={"Excluir"}
+      />
+    );
+  };
   return (
     <div className={styles.mainTable}>
       <div
@@ -28,6 +46,8 @@ function RequisicaoListagem() {
         />
       </div>
       <CustomTable
+        block={true}
+        actionTemplate={actionTemplate}
         data={requisicoes}
         columns={[
           { field: "titulo", header: "Título" },

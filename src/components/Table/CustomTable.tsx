@@ -6,14 +6,29 @@ interface ColumnMeta {
   header: string;
 }
 
-export default function CustomTable({ data, columns }: { data: any[] , columns: ColumnMeta[] }) {
-
+export default function CustomTable({
+  data,
+  columns,
+  block,
+  actionTemplate,
+}: {
+  data: any[];
+  block?: boolean;
+  actionTemplate?: (rowData: any) => JSX.Element;
+  columns: ColumnMeta[];
+}) {
   return (
-    <div className="card">
-      <DataTable value={data} tableStyle={{ minWidth: "50rem" }}>
+    <div className="card" style={{ maxHeight: "70vh" }}>
+      <DataTable
+        value={data}
+        scrollHeight="70vh"
+        style={{}}
+        tableStyle={{ minWidth: "50rem", maxHeight: "100%" }}
+      >
         {columns.map((col, i) => (
           <Column key={col.field} field={col.field} header={col.header} />
         ))}
+        {block && <Column field={""} body={actionTemplate} style={{ width: "3rem" }} />}
       </DataTable>
     </div>
   );

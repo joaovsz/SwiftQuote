@@ -1,4 +1,12 @@
-import { collection, getDocs, query, where } from "firebase/firestore";
+import {
+  collection,
+  deleteDoc,
+  doc,
+  getDocs,
+  query,
+  updateDoc,
+  where,
+} from "firebase/firestore";
 import { db } from "../firebaseConfig.ts";
 import {
   Usuario,
@@ -46,7 +54,47 @@ export const fetchContatos = async (): Promise<Contato[]> => {
 export const fetchProdutos = async (): Promise<Produto[]> => {
   return await fetchCollection<Produto>("produtos");
 };
-
+export const fetchColaboradores = async (): Promise<Usuario[]> => {
+  return await fetchCollection<Usuario>("usuarios");
+};
+export const blockUser = async (
+  userId: string,
+  blockStatus: boolean
+): Promise<void> => {
+  try {
+    return await updateDoc(doc(db, "usuarios", userId), {
+      blocked: blockStatus,
+    });
+  } catch (e) {
+    console.error("Erro ao bloquear usuário: ", e);
+  }
+};
+export const excludeReq = async (id: string): Promise<void> => {
+  try {
+    await deleteDoc(doc(db, "requisicoes", id));
+  } catch (e) {
+    console.error("Erro ao excluir requisição: ", e);
+  }
+};
+export const updateReqCount = async (
+  id: string,
+  count: number
+): Promise<void> => {
+  try {
+    console.log(count);
+    await updateDoc(doc(db, "requisicoes", id), {
+      countCotacoes: count,
+      status:
+        count === 1 || count == 2
+          ? "Em cotação"
+          : count >= 3
+          ? "Cotada"
+          : "Cotada",
+    });
+  } catch (e) {
+    console.error("Erro ao atualizar contagem de cotações: ", e);
+  }
+};
 export const getCotacoesPorProduto = async (
   produtoId: number
 ): Promise<Cotacao[]> => {
