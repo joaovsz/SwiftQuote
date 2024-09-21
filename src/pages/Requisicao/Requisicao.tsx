@@ -39,7 +39,7 @@ function RequisicaoListagem() {
         className={styles.row}
         style={{ width: "100%", justifyContent: "space-between" }}
       >
-        <h2>Requisições Cadastradass</h2>
+        <h2>Requisições Cadastradas</h2>
         <CustomButton
           label="Nova Requisição"
           onClick={() => navigate("/requisicoes/cadastro")}
